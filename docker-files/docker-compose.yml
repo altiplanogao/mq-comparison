@@ -1,0 +1,114 @@
+version: '2'
+
+services:
+  nameserver:
+    image: ventz/bind
+    container_name: nameserver
+    hostname: ns.handy.dev
+    networks:
+      cons_net:
+        ipv4_address: 172.222.2.10
+    dns: 172.222.2.10
+    volumes : 
+     - ./vol/conf/bind:/etc/bind:ro
+     - ./vol/data/bind/var/cache/bind:/var/cache/bind
+     - ./vol/data/bind/var/log/named:/var/log/named
+
+  zookeeper1:
+    image: jplock/zookeeper:3.4.8
+    container_name: zoo1
+    hostname: zoo1.handy.dev
+    networks:
+      cons_net:
+        ipv4_address: 172.222.2.11
+    dns: 172.222.2.10
+    volumes : 
+     - ./vol/conf/zk-cluster:/opt/zookeeper/conf:ro
+     - ./vol/data/zk-cluster/zoo1:/tmp/zookeeper
+    ports:
+     - "9181:2181"
+
+  zookeeper2:
+    image: jplock/zookeeper:3.4.8
+    container_name: zoo2
+    hostname: zoo2.handy.dev
+    networks:
+      cons_net:
+        ipv4_address: 172.222.2.12
+    dns: 172.222.2.10
+    volumes : 
+     - ./vol/conf/zk-cluster:/opt/zookeeper/conf:ro
+     - ./vol/data/zk-cluster/zoo2:/tmp/zookeeper
+    ports:
+     - "9182:2181"
+
+  zookeeper3:
+    image: jplock/zookeeper:3.4.8
+    container_name: zoo3
+    hostname: zoo3.handy.dev
+    networks:
+      cons_net:
+        ipv4_address: 172.222.2.13
+    dns: 172.222.2.10
+    volumes : 
+     - ./vol/conf/zk-cluster:/opt/zookeeper/conf:ro
+     - ./vol/data/zk-cluster/zoo3:/tmp/zookeeper
+    ports:
+     - "9183:2181"
+
+  kafka:
+    image: wurstmeister/kafka:0.10.1.1
+    container_name: kafka1
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka.handy.dev
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181
+    networks:
+      cons_net:
+        ipv4_address: 172.222.2.102
+    dns: 172.222.2.10
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  redis:
+    image: redis:3.2.1
+    container_name: redis
+    hostname: redis.handy.dev
+    networks:
+      cons_net:
+        ipv4_address: 172.222.2.103
+    dns: 172.222.2.10
+
+  activemq:
+    image: webcenter/activemq:5.14.3
+    container_name: activemq
+    hostname: activemq.handy.dev
+    networks:
+      cons_net:
+        ipv4_address: 172.222.2.104
+    dns: 172.222.2.10
+    ports:
+     - "61616:61616"
+
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    hostname: rabbitmq.handy.dev
+    networks:
+      cons_net:
+        ipv4_address: 172.222.2.105
+    dns: 172.222.2.10
+    ports:
+     - "5672:5672"
+
+
+networks:
+  cons_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.222.2.0/24
+        gateway: 172.222.2.1
+

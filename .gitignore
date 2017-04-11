@@ -7,3 +7,8 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+*.iml
+.idea
+.DS_Store
+/docker-files/vol/data/bind/
+/docker-files/vol/data/zk-cluster/*/version-2/

@@ -1,0 +1,20 @@
+;
+; BIND reverse data file for broadcast zone
+;
+$TTL	604800
+@	IN	SOA	handy.dev. root.handy.dev. (
+			      2		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	handy.dev.
+10	IN	PTR	ns.handy.dev.
+11	IN	PTR	zoo1.handy.dev.
+12	IN	PTR	zoo2.handy.dev.
+13	IN	PTR	zoo3.handy.dev.
+102	IN	PTR	kafka.handy.dev.
+103	IN	PTR	redis.handy.dev.
+104	IN	PTR	activemq.handy.dev.
+105	IN	PTR	rabbitmq.handy.dev.

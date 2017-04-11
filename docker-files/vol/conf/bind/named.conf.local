@@ -1,0 +1,20 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+//正向解析
+zone "handy.dev" {
+	type master;
+	file "/etc/bind/db.handy.dev";
+};
+
+//反向解析 
+zone "0.222.172.in-addr.arpa" {
+	type master;
+	notify no;
+	file  "/etc/bind/db.2.222.172";
+};
