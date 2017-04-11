@@ -79,6 +79,8 @@ services:
       cons_net:
         ipv4_address: 172.222.2.103
     dns: 172.222.2.10
+    ports:
+     - "6379:6379"
 
   activemq:
     image: webcenter/activemq:5.14.3
